@@ -79,4 +79,18 @@ export default class BlockChain implements BlockChainData {
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
   }
+
+  findName(name: string) {
+    return this.chain.filter((d: BlockData) => {
+      if (d.data.length === 0) {
+        console.log('nothing')
+        return false
+      } else {
+        console.log(d.data.cert.name)
+        console.log(name)
+        console.log(d.data.cert.name === name)
+        return d.data.cert.name === name
+      }
+    })
+  }
 }
