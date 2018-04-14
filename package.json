@@ -1,16 +1,17 @@
 {
-  "name": "build-blockchain",
+  "name": "cert-blockchain",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "concurrently \"tsc -w\" \"jest --watchAll\"",
     "dev-test": "concurrently \"tsc -w\" \"nodemon dist/test/dev-test.js\"",
-    "dev": "concurrently \"tsc -w\" \"nodemon dist/app/index.js\""
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/app/index.js\"",
+    "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["blockchain"],
+  "author": "Lai Weng Han",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
