@@ -1,5 +1,7 @@
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
+import cors = require('cors')
+import * as path from 'path'
 
 import BlockChain from '../blockchain/blockchain'
 import P2pServer from './p2p-server'
@@ -15,13 +17,19 @@ let transaction: TransactionData[] = []
 // Setup Express REST SERVER
 const app = express()
 app.use(bodyParser.json())
+app.use(cors())
+
 const p2pServer = new P2pServer(bc)
 
+app.use('/', express.static(path.join(__dirname, '../../front')))
+
 app.get('/blocks', (req, res) => {
-  res.json(bc.getBlockChain())
+  let blockchain = bc.getBlockChain()
+  res.json({ no: blockchain.length, difficulty: bc.difficulty, blockchain: blockchain })
 })
 
 app.post('/mine', (req, res) => {
+  console.log(req.body)
   let cert: Cert = req.body
   let transaction: TransactionData = new Transaction(Date.now(), cert)
 

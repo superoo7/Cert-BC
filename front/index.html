@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Blockchain Frontend</title>
+</head>
+
+<body>
+
+  <style>
+    textarea {
+      width: 400px;
+      height: 300px;
+    }
+
+    div>div {
+      max-width: 90vw;
+    }
+  </style>
+
+  <h1>Blockchain Front End</h1>
+
+  <hr>
+  <div>
+    <h5>API END POINT</h5>
+    <input id="api" type="text" placeholder="http://localhost:3001">
+  </div>
+  <hr>
+
+  <div>
+    <h1>Insert Data</h1>
+    <hr>
+    <i>POST /mine</i>
+    <br>
+    <textarea id="mine"></textarea>
+    <br>
+    <button onclick="mine()">Send Request to Blockchain</button>
+    <div id="result"></div>
+  </div>
+
+  <div>
+    <h1>Get all blocks data</h1>
+    <hr>
+    <i>GET /blocks</i>
+    <br>
+    <button onclick="blocks()">Get all blocks</button>
+    <div id="block"></div>
+
+  </div>
+
+  <div>
+    <h1>Find data with name</h1>
+    <button onclick="addName()">default</button>
+    <br>
+    <input id="find" type="text" placeholder="name">
+    <button onclick="find()">submit</button>
+
+    <div id="name"></div>
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script>
+    var json = {
+      address: 'Jalan TU 43, 75350 Melaka, Malaysia',
+      avatar: '',
+      category: 'Film',
+      country: 'Malaysia',
+      date: 1520053734216,
+      documents: {
+        ideaku: {
+          _id: 'CRLYI00000990',
+          hash: 'd07ea5658b80cf28f69ce2b3692fe936536521a1e4d48f3b685cfe0040604d18',
+          certificate: 1520053788,
+          payment: '-L6eFvuX2pk9G8ncIJ54',
+          receipt: 1520053788
+        }
+      },
+      latitude: 2.277787,
+      lngitude: 102.2751654,
+      media: 'https://firebasestorage.googleapis.com/v0/b/ideaku-753d5.appspot.com/o/uf14c0hKJKRcV64QMxPDElJFnIJ2%2F-990%2Fpublic%2F1520053698769.mp4?alt=media&token=650041ee-8a45-4d7d-8743-979858025221',
+      media_name: '1520053698769.mp4',
+      name: 'Goh Ong Sing',
+      isPrivate: false,
+      title: 'Rubber Boy'
+    }
+
+    var mineObj = document.querySelector('#mine')
+    mineObj.value =
+      `{
+  "address":"Jalan TU 43, 75350 Melaka, Malaysia",
+  "avatar":"",
+  "category":"Film",
+  "country":"Malaysia",
+  "date":1520053734216,
+  "documents":
+    {"ideaku":
+      {
+      "_id":"CRLYI00000990",
+      "hash":"d07ea5658b80cf28f69ce2b3692fe936536521a1e4d48f3b685cfe0040604d18",
+      "certificate":1520053788,
+      "payment":"-6eFvuX2pk9G8ncIJ54",
+      "receipt":1520053788
+    }
+  },
+  "latitude":2.277787,
+  "lngitude":102.2751654,
+  "media":"https://firebasestorage.googleapis.com/v0/b/ideaku-753d5.appspot.com/o/uf14c0hKJKRcV64QMxPDElJFnIJ2%2F-990%2Fpublic%2F1520053698769.mp4?alt=media&token=650041ee-8a45-4d7d-8743-979858025221",
+  "media_name":"1520053698769.mp4",
+  "name":"Goh Ong Sing",
+  "isPrivate":false,
+  "title":"Rubber Boy"
+}
+`
+
+    document.querySelector('#api').value = window.location.href.slice(0, -1)
+
+    function mine() {
+      var server_address = document.querySelector('#api').value
+      var data = JSON.parse(mineObj.value)
+      axios
+        .post(`${server_address}/mine`, data)
+        .then(
+          data => (document.querySelector('#result').innerHTML = `<pre>${JSON.stringify(data)}</pre>`)
+        )
+    }
+
+    function blocks() {
+      var server_address = document.querySelector('#api').value
+      axios
+        .get(`${server_address}/blocks`)
+        .then(data => (document.querySelector('#block').innerText = JSON.stringify(data.data)))
+    }
+
+    function find() {
+      var server_address = document.querySelector('#api').value
+      var name = document.querySelector('#find').value
+      console.log(name)
+      axios
+        .post(`${server_address}/data`, {
+          name
+        })
+        .then(data => (document.querySelector('#name').innerText = JSON.stringify(data.data)))
+    }
+
+    function addName() {
+      document.querySelector('#find').value = 'Goh Ong Sing'
+    }
+  </script>
+</body>
+
+</html>
